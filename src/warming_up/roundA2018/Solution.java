@@ -1,5 +1,7 @@
 package warming_up.roundA2018;
 
+import java.util.Arrays;
+
 class Solution {
     long closestNumber(long n) {
         StringBuilder sb = new StringBuilder();
@@ -34,5 +36,20 @@ class Solution {
             }
         }
         return Math.abs(n - Long.parseLong(sb.toString()));
+    }
+
+    static double expectedValueNaive(double[] nums, int n, int k, double[] sums) {
+        if (n == 0)
+            return 0.0;
+        if (k == 0)
+            return sums[n] / n;
+        double expectedNext = expectedValueNaive(nums, n, k-1, sums);
+        int idx = Arrays.binarySearch(nums, expectedNext);
+        if (idx < 0) {
+            idx = - (idx + 1);
+        }
+        double greaterSum = sums[n] - sums[idx];
+        double greaterExp = greaterSum / n;
+        return greaterExp + expectedNext * ((double)idx / n);
     }
 }
